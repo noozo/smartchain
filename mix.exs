@@ -23,6 +23,7 @@ defmodule Interpreter.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ex_sha3, "~> 0.1.0"},
       # Testing and dev
       {:mix_test_watch, "~> 1.0.2", only: [:dev, :test], runtime: false},
       {:ex_unit_notifier, "~> 1.0.0", only: [:dev, :test], runtime: false},
