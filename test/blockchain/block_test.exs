@@ -95,11 +95,11 @@ defmodule Blockchain.BlockTest do
     end
 
     test "the genesis block is always valid", %{last_block: genesis} do
-      assert {:ok, :valid_block} == Block.validate_block(nil, genesis)
+      assert {:ok, :valid} == Block.validate_block(nil, genesis)
     end
 
     test "validates if block is valid", %{last_block: last_block, block: block} do
-      assert {:ok, :valid_block} == Block.validate_block(last_block, block)
+      assert {:ok, :valid} == Block.validate_block(last_block, block)
     end
 
     test "does not validate if the parent_hash is invalid", %{
@@ -115,7 +115,7 @@ defmodule Blockchain.BlockTest do
       block: block
     } do
       block = put_in(block, [:headers, :number], 1000)
-      assert {:error, :invalid_block_number} == Block.validate_block(last_block, block)
+      assert {:error, :invalid_number} == Block.validate_block(last_block, block)
     end
 
     test "does not validate if the difficulty changed by more than 1", %{

@@ -40,7 +40,7 @@ defmodule Blockchain.Block do
     cond do
       # Genesis block is always valid
       Util.keccak_hash(block) == Util.keccak_hash(genesis()) ->
-        {:ok, :valid_block}
+        {:ok, :valid}
 
       # Parent hash must be hash of the previous block
       Util.keccak_hash(last_block.headers) != block.headers.parent_hash ->
@@ -48,7 +48,7 @@ defmodule Blockchain.Block do
 
       # The block numbers must be sequential
       block.headers.number != last_block.headers.number + 1 ->
-        {:error, :invalid_block_number}
+        {:error, :invalid_number}
 
       # Difficulty cannot change by more than 1 between blocks
       abs(last_block.headers.difficulty - block.headers.difficulty) > 1 ->
@@ -59,7 +59,7 @@ defmodule Blockchain.Block do
         {:error, :proof_of_work_validation_failed}
 
       true ->
-        {:ok, :valid_block}
+        {:ok, :valid}
     end
   end
 

@@ -13,6 +13,11 @@ defmodule Blockchain.Blockchain do
   end
 
   def add_block(%{chain: chain} = blockchain, block) do
-    Map.put(blockchain, :chain, [block | chain])
+    last_block = List.first(chain)
+
+    case Block.validate_block(last_block, block) do
+      {:ok, :valid} -> Map.put(blockchain, :chain, [block | chain])
+      _ -> blockchain
+    end
   end
 end
