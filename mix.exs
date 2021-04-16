@@ -33,6 +33,7 @@ defmodule Interpreter.MixProject do
 
   defp aliases do
     [
+      sobelow: [],
       "test.watch": [
         "format",
         "test --color",
