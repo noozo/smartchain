@@ -1,4 +1,4 @@
-defmodule Stack do
+defmodule Helpers.Stack do
   @moduledoc """
   A simple stack
 
@@ -18,6 +18,8 @@ defmodule Stack do
       {2, %Stack{elements: [1]}}
   """
   defstruct elements: []
+
+  alias Helpers.Stack
 
   def new, do: %Stack{}
 

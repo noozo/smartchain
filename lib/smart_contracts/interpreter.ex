@@ -1,8 +1,10 @@
-defmodule Interpreter do
+defmodule SmartContracts.Interpreter do
   @moduledoc """
   Smartchain interpreter and agent
   """
   use Agent
+
+  alias Helpers.Stack
 
   @loc_limit 10_000
 
@@ -49,11 +51,14 @@ defmodule Interpreter do
   end
 
   def run_code(pid) do
-    code = Agent.get(pid, &Map.get(&1, :code))
-    execution_count = Agent.get(pid, &Map.get(&1, :execution_count))
-    program_counter = Agent.get(pid, &Map.get(&1, :program_counter))
+    %{
+      code: code,
+      execution_count: execution_count,
+      program_counter: program_counter
+    } = state = Agent.get(pid, fn state -> state end)
 
-    :ok = Agent.update(pid, &Map.put(&1, :execution_count, execution_count + 1))
+    state = Map.put(state, :execution_count, execution_count + 1)
+    :ok = Agent.update(pid, fn _old_state -> state end)
 
     if execution_count > @loc_limit do
       raise "Execution count exceeded #{@loc_limit} loc. Do you have an infinite loop?"
@@ -61,7 +66,7 @@ defmodule Interpreter do
 
     op = code[program_counter]
 
-    case execute_operation(pid, op) do
+    case execute_operation(pid, state, op) do
       {:finished, result} ->
         result
 
@@ -89,62 +94,52 @@ defmodule Interpreter do
     set_program_counter(pid, destination - 1)
   end
 
-  defp execute_operation(pid, op) do
-    code = Agent.get(pid, &Map.get(&1, :code))
-    stack = Agent.get(pid, &Map.get(&1, :stack))
-    loc = Agent.get(pid, &Map.get(&1, :loc))
+  defp execute_operation(pid, %{stack: stack}, :stop) do
+    {result, _stack} = pop_stack(pid, stack)
+    {:finished, result}
+  end
 
-    case op do
-      :stop ->
-        {result, _stack} = pop_stack(pid, stack)
-        {:finished, result}
+  defp execute_operation(pid, %{code: code, loc: loc, stack: stack}, :push) do
+    program_counter = increase_program_counter(pid)
 
-      :push ->
-        program_counter = increase_program_counter(pid)
+    if program_counter >= loc do
+      raise "Push instruction cannot be last"
+    end
 
-        if program_counter >= loc do
-          raise "Push instruction cannot be last"
-        end
+    value = code[program_counter]
+    push_stack(pid, stack, value)
+  end
 
-        value = code[program_counter]
-        push_stack(pid, stack, value)
+  defp execute_operation(pid, %{stack: stack}, :add), do: math2(pid, stack, &(&1 + &2))
 
-      :add ->
-        math2(pid, stack, &(&1 + &2))
+  defp execute_operation(pid, %{stack: stack}, :sub), do: math2(pid, stack, &(&1 - &2))
 
-      :sub ->
-        math2(pid, stack, &(&1 - &2))
+  defp execute_operation(pid, %{stack: stack}, :mul), do: math2(pid, stack, &(&1 * &2))
 
-      :mul ->
-        math2(pid, stack, &(&1 * &2))
+  defp execute_operation(pid, %{stack: stack}, :div), do: math2(pid, stack, &(&1 / &2))
 
-      :div ->
-        math2(pid, stack, &(&1 / &2))
+  defp execute_operation(pid, %{stack: stack}, :lt),
+    do: math2(pid, stack, &if(&1 < &2, do: 1, else: 0))
 
-      :lt ->
-        math2(pid, stack, &if(&1 < &2, do: 1, else: 0))
+  defp execute_operation(pid, %{stack: stack}, :gt),
+    do: math2(pid, stack, &if(&1 > &2, do: 1, else: 0))
 
-      :gt ->
-        math2(pid, stack, &if(&1 > &2, do: 1, else: 0))
+  defp execute_operation(pid, %{stack: stack}, :eq),
+    do: math2(pid, stack, &if(&1 == &2, do: 1, else: 0))
 
-      :eq ->
-        math2(pid, stack, &if(&1 == &2, do: 1, else: 0))
+  defp execute_operation(pid, %{stack: stack}, :and),
+    do: math2(pid, stack, &if(&1 == 1 and &2 == 1, do: 1, else: 0))
 
-      :and ->
-        math2(pid, stack, &if(&1 == 1 and &2 == 1, do: 1, else: 0))
+  defp execute_operation(pid, %{stack: stack}, :or),
+    do: math2(pid, stack, &if(&1 == 1 or &2 == 1, do: 1, else: 0))
 
-      :or ->
-        math2(pid, stack, &if(&1 == 1 or &2 == 1, do: 1, else: 0))
+  defp execute_operation(pid, %{stack: stack}, :jump), do: jump(pid, stack)
 
-      :jump ->
-        jump(pid, stack)
+  defp execute_operation(pid, %{stack: stack}, :jumpi) do
+    {condition, stack} = pop_stack(pid, stack)
 
-      :jumpi ->
-        {condition, stack} = pop_stack(pid, stack)
-
-        if condition == 1 do
-          jump(pid, stack)
-        end
+    if condition == 1 do
+      jump(pid, stack)
     end
   end
 end

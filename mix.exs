@@ -27,8 +27,7 @@ defmodule Interpreter.MixProject do
       {:mix_test_watch, "~> 1.0.2", only: [:dev, :test], runtime: false},
       {:ex_unit_notifier, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:credo, "~> 1.5.0-rc.5", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev, :test], runtime: false},
-      {:sobelow, "~> 0.11.0", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -37,8 +36,7 @@ defmodule Interpreter.MixProject do
       "test.watch": [
         "format",
         "test --color",
-        "credo --strict",
-        "sobelow --verbose --config --skip"
+        "credo --strict"
       ]
     ]
   end
