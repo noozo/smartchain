@@ -8,5 +8,6 @@
   "file_system": {:hex, :file_system, "0.2.10", "fb082005a9cd1711c05b5248710f8826b02d7d1784e7c3451f9c1231d4fc162d", [:mix], [], "hexpm", "41195edbfb562a593726eda3b3e8b103a309b733ad25f3d642ba49696bf715dc"},
   "jason": {:hex, :jason, "1.2.2", "ba43e3f2709fd1aa1dce90aaabfd039d000469c05c56f0b8e31978e03fa39052", [:mix], [{:decimal, "~> 1.0 or ~> 2.0", [hex: :decimal, repo: "hexpm", optional: true]}], "hexpm", "18a228f5f0058ee183f29f9eae0805c6e59d61c3b006760668d8d18ff0d12179"},
   "mix_test_watch": {:hex, :mix_test_watch, "1.0.2", "34900184cbbbc6b6ed616ed3a8ea9b791f9fd2088419352a6d3200525637f785", [:mix], [{:file_system, "~> 0.2.1 or ~> 0.3", [hex: :file_system, repo: "hexpm", optional: false]}], "hexpm", "47ac558d8b06f684773972c6d04fcc15590abdb97aeb7666da19fcbfdc441a07"},
+  "mox": {:hex, :mox, "1.0.0", "4b3c7005173f47ff30641ba044eb0fe67287743eec9bd9545e37f3002b0a9f8b", [:mix], [], "hexpm", "201b0a20b7abdaaab083e9cf97884950f8a30a1350a1da403b3145e213c6f4df"},
   "sobelow": {:hex, :sobelow, "0.11.1", "23438964486f8112b41e743bbfd402da3e5b296fdc9eacab29914b79c48916dd", [:mix], [{:jason, "~> 1.0", [hex: :jason, repo: "hexpm", optional: false]}], "hexpm", "9897363a7eff96f4809304a90aad819e2ad5e5d24db547af502885146746a53c"},
 }

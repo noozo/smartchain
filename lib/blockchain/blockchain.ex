@@ -11,4 +11,8 @@ defmodule Blockchain.Blockchain do
       chain: [Block.genesis()]
     }
   end
+
+  def add_block(%{chain: chain} = blockchain, block) do
+    Map.put(blockchain, :chain, [block | chain])
+  end
 end

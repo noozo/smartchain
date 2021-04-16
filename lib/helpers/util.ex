@@ -21,7 +21,7 @@ defmodule Helpers.Util do
       false
   """
   def keccak_hash(data) do
-    # TODO: Replace ex_sha3 with native version for performance
+    # NOTE: Replace ex_sha3 with native version for performance
     data
     |> Jason.encode!()
     |> ExSha3.keccak_256()
