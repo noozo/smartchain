@@ -10,12 +10,15 @@ defmodule Smartchain.Blockchain.Agent do
 
   def start_link([]) do
     Logger.info("Starting blockchain agent...")
-    Agent.start_link(fn ->
-      %{
-        blockchain: Blockchain.new()
-      }
-    end,
-    name: __MODULE__)
+
+    Agent.start_link(
+      fn ->
+        %{
+          blockchain: Blockchain.new()
+        }
+      end,
+      name: __MODULE__
+    )
   end
 
   def get do

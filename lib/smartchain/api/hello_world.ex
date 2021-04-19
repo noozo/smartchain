@@ -8,8 +8,8 @@ defmodule Smartchain.Api.HelloWorld do
   alias Smartchain.Blockchain.Block
   alias Smartchain.Blockchain.Blockchain
 
-  plug :match
-  plug :dispatch
+  plug(:match)
+  plug(:dispatch)
 
   get "/blockchain" do
     %{chain: chain} = _blockchain = Agent.get()
