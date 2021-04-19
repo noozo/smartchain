@@ -1,4 +1,4 @@
-defmodule Helpers.Stack do
+defmodule Smartchain.Helpers.Stack do
   @moduledoc """
   A simple stack
 
@@ -19,7 +19,7 @@ defmodule Helpers.Stack do
   """
   defstruct elements: []
 
-  alias Helpers.Stack
+  alias Smartchain.Helpers.Stack
 
   def new, do: %Stack{}
 

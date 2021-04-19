@@ -1,10 +1,10 @@
-defmodule Blockchain.Blockchain do
+defmodule Smartchain.Blockchain.Blockchain do
   @moduledoc """
   The blockchain itself
   """
   defstruct ~w(chain)a
 
-  alias Blockchain.Block
+  alias Smartchain.Blockchain.Block
 
   def new do
     %__MODULE__{

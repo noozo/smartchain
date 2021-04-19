@@ -1,8 +1,8 @@
-defmodule Blockchain.TargetBlockHashCalculatorImplTest do
+defmodule Smartchain.Blockchain.TargetBlockHashCalculatorImplTest do
   use ExUnit.Case
 
-  alias Blockchain.Block
-  alias Blockchain.TargetBlockHashCalculator
+  alias Smartchain.Blockchain.Block
+  alias Smartchain.Blockchain.TargetBlockHashCalculator
 
   defp block(difficulty, base \\ Block.genesis()) do
     headers = Map.put(base.headers, :difficulty, difficulty)

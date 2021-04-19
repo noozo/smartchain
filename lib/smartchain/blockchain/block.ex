@@ -1,4 +1,4 @@
-defmodule Blockchain.Block do
+defmodule Smartchain.Blockchain.Block do
   @moduledoc """
   A block
   """
@@ -14,8 +14,8 @@ defmodule Blockchain.Block do
 
   require Logger
 
-  alias Blockchain.TargetBlockHashCalculator
-  alias Helpers.Util
+  alias Smartchain.Blockchain.TargetBlockHashCalculator
+  alias Smartchain.Helpers.Util
 
   @max_nonce_value :math.pow(2, 64)
   @milliseconds 1

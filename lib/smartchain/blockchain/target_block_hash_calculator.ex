@@ -1,8 +1,8 @@
-defmodule Blockchain.TargetBlockHashCalculator do
+defmodule Smartchain.Blockchain.TargetBlockHashCalculator do
   @moduledoc """
   Calculates a target hash for a block based on some difficulty
   """
-  alias Blockchain.Block
+  alias Smartchain.Blockchain.Block
 
   @callback calculate_target_block_hash(Block.t()) :: String.t()
 
@@ -13,16 +13,16 @@ defmodule Blockchain.TargetBlockHashCalculator do
     Application.get_env(
       :smartchain,
       :target_block_hash_calculator,
-      Blockchain.TargetBlockHashCalculator.Impl
+      Smartchain.Blockchain.TargetBlockHashCalculator.Impl
     )
   end
 end
 
-defmodule Blockchain.TargetBlockHashCalculator.Impl do
+defmodule Smartchain.Blockchain.TargetBlockHashCalculator.Impl do
   @moduledoc """
   Implementation
   """
-  @behaviour Blockchain.TargetBlockHashCalculator
+  @behaviour Smartchain.Blockchain.TargetBlockHashCalculator
 
   @hash_length 64
   @max_hash_value "f" |> String.duplicate(@hash_length) |> String.to_integer(16)

@@ -1,6 +1,6 @@
-defmodule SmartContracts.InterpreterTest do
+defmodule Smartchain.SmartContracts.InterpreterTest do
   use ExUnit.Case
-  alias SmartContracts.Interpreter
+  alias Smartchain.SmartContracts.Interpreter
   doctest Interpreter, import: true
 
   describe "push" do

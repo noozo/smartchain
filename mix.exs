@@ -15,6 +15,7 @@ defmodule Interpreter.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
+      mod: {Smartchain.Application, []},
       extra_applications: [:logger]
     ]
   end
@@ -22,6 +23,7 @@ defmodule Interpreter.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:plug_cowboy, "~> 2.0"},
       {:ex_sha3, "~> 0.1.0"},
       # Testing and dev
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},

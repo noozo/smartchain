@@ -1,4 +1,4 @@
-defmodule Helpers.Util do
+defmodule Smartchain.Helpers.Util do
   @moduledoc """
   Util functions
   """

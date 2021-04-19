@@ -1,9 +1,9 @@
-defmodule Blockchain.BlockTest do
+defmodule Smartchain.Blockchain.BlockTest do
   use ExUnit.Case
 
-  alias Blockchain.Block
-  alias Blockchain.TargetBlockHashCalculator
-  alias Helpers.Util
+  alias Smartchain.Blockchain.Block
+  alias Smartchain.Blockchain.TargetBlockHashCalculator
+  alias Smartchain.Helpers.Util
 
   doctest Block, import: true
 
@@ -14,8 +14,8 @@ defmodule Blockchain.BlockTest do
   setup(data) do
     # If no expectations are defined, use the real deal
     Mox.stub_with(
-      Blockchain.TargetBlockHashCalculator.MockImpl,
-      Blockchain.TargetBlockHashCalculator.Impl
+      Smartchain.Blockchain.TargetBlockHashCalculator.MockImpl,
+      Smartchain.Blockchain.TargetBlockHashCalculator.Impl
     )
 
     data
@@ -133,7 +133,7 @@ defmodule Blockchain.BlockTest do
       # Fake the target block hash calculation to a really low number, so that
       # the new block cannot have a lower value and fails the proof of work
       expect(
-        Blockchain.TargetBlockHashCalculator.MockImpl,
+        Smartchain.Blockchain.TargetBlockHashCalculator.MockImpl,
         :calculate_target_block_hash,
         fn _last_block ->
           String.duplicate("0", 64)

@@ -1,10 +1,10 @@
-defmodule SmartContracts.Interpreter do
+defmodule Smartchain.SmartContracts.Interpreter do
   @moduledoc """
   Smartchain interpreter and agent
   """
   use Agent
 
-  alias Helpers.Stack
+  alias Smartchain.Helpers.Stack
 
   @loc_limit 10_000
 
