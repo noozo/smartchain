@@ -6,10 +6,16 @@ defmodule Smartchain.Application do
   use Application
 
   def start(_type, _args) do
+    api_port = String.to_integer(System.fetch_env!("API_PORT"))
+
     # List all child processes to be supervised
     children = [
-      {Plug.Cowboy, scheme: :http, plug: Smartchain.Api.HelloWorld, options: [port: 4001]},
-      {Smartchain.Blockchain.Agent, []}
+      {Cluster.Supervisor,
+       [Application.get_env(:libcluster, :topologies), [name: Smartchain.ClusterSupervisor]]},
+      {Plug.Cowboy, scheme: :http, plug: Smartchain.Api.HelloWorld, options: [port: api_port]},
+      {Smartchain.Blockchain.Agent, []},
+      {Smartchain.Blockchain.Pubsub, []},
+      {Phoenix.PubSub, name: Smartchain.PubSub}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

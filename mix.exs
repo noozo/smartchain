@@ -23,6 +23,8 @@ defmodule Interpreter.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:phoenix_pubsub, "~> 2.0"},
+      {:libcluster, "~> 3.2"},
       {:plug_cowboy, "~> 2.0"},
       {:ex_sha3, "~> 0.1.0"},
       # Testing and dev
