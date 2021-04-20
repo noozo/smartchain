@@ -14,7 +14,7 @@ defmodule Smartchain.Application do
        [Application.get_env(:libcluster, :topologies), [name: Smartchain.ClusterSupervisor]]},
       {Plug.Cowboy, scheme: :http, plug: Smartchain.Api.HelloWorld, options: [port: api_port]},
       {Smartchain.Blockchain.Agent, []},
-      {Smartchain.Blockchain.Pubsub, []},
+      {Smartchain.Blockchain.PubSub, []},
       {Phoenix.PubSub, name: Smartchain.PubSub}
     ]
 

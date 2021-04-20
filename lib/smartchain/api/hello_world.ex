@@ -7,6 +7,7 @@ defmodule Smartchain.Api.HelloWorld do
   alias Smartchain.Blockchain.Agent
   alias Smartchain.Blockchain.Block
   alias Smartchain.Blockchain.Blockchain
+  alias Smartchain.Blockchain.PubSub
 
   plug(:match)
   plug(:dispatch)
@@ -18,11 +19,16 @@ defmodule Smartchain.Api.HelloWorld do
   end
 
   get "/blockchain/mine" do
-    %{chain: chain} = blockchain = Agent.get()
-    last_block = List.first(chain)
-    block = Block.mine(last_block, "me")
-    blockchain = Blockchain.add_block(blockchain, block)
-    Agent.update(blockchain)
+
+    block = Agent.get()
+    |> Blockchain.last_block()
+    |> Block.mine("me")
+
+    Agent.get()
+    |> Blockchain.add_block(block)
+    |> Agent.update()
+
+    PubSub.broadcast_block(block)
 
     send_resp(conn, 200, Jason.encode!(block))
   end
