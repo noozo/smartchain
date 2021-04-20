@@ -32,6 +32,7 @@ defmodule Smartchain.Blockchain.PubSub do
     Enum.each(@channels, fn channel ->
       :ok = Phoenix.PubSub.subscribe(Smartchain.PubSub, channel)
     end)
+
     {:reply, :ok, state}
   end
 
@@ -41,16 +42,17 @@ defmodule Smartchain.Blockchain.PubSub do
   end
 
   def handle_info(%Block{} = block, state) do
-    IO.inspect("Got a block: #{inspect(block)}")
+    Logger.debug("Got a block: #{inspect(block)}")
+
     Agent.get()
     |> Blockchain.add_block(block)
     |> Agent.update()
-    |> IO.inspect()
+
     {:noreply, state}
   end
 
   def handle_info(other_message, state) do
-    IO.inspect("Unhandled message received: #{inspect(other_message)}")
+    Logger.warn("Unhandled message received: #{inspect(other_message)}")
     {:noreply, state}
   end
 end

@@ -23,6 +23,7 @@ defmodule Smartchain.Blockchain.Blockchain do
       {:ok, :valid} ->
         Logger.info("New block accepted")
         Map.put(blockchain, :chain, [block | chain])
+
       _ ->
         Logger.info("New block rejected")
         blockchain

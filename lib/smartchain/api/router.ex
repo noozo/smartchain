@@ -1,4 +1,7 @@
-defmodule Smartchain.Api.HelloWorld do
+defmodule Smartchain.Api.Router do
+  @moduledoc """
+  API router
+  """
   use Plug.Router
   use Plug.ErrorHandler
 
@@ -19,10 +22,10 @@ defmodule Smartchain.Api.HelloWorld do
   end
 
   get "/blockchain/mine" do
-
-    block = Agent.get()
-    |> Blockchain.last_block()
-    |> Block.mine("me")
+    block =
+      Agent.get()
+      |> Blockchain.last_block()
+      |> Block.mine("me")
 
     Agent.get()
     |> Blockchain.add_block(block)
