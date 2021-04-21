@@ -6,6 +6,7 @@ defmodule Smartchain.Blockchain.Blockchain do
 
   require Logger
 
+  alias Smartchain.Blockchain.Agent, as: BlockChainAgent
   alias Smartchain.Blockchain.Block
 
   def new do
@@ -28,5 +29,14 @@ defmodule Smartchain.Blockchain.Blockchain do
         Logger.info("New block rejected")
         blockchain
     end
+  end
+
+  def request_blockchain_from_peer([]), do: Logger.info("No one else is connected, using my own blockchain.")
+  def request_blockchain_from_peer([node]), do: request_blockchain_from_peer(node)
+  def request_blockchain_from_peer([node | _rest]), do: request_blockchain_from_peer(node)
+  def request_blockchain_from_peer(node) do
+    # At least one peer is connected, let's ask someone for its blockchain
+    peer_blockchain = Agent.get({BlockChainAgent, node}, &Map.get(&1, :blockchain))
+    BlockChainAgent.update(peer_blockchain)
   end
 end
