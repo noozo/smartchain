@@ -31,12 +31,29 @@ defmodule Smartchain.Blockchain.Blockchain do
     end
   end
 
-  def request_blockchain_from_peer([]), do: Logger.info("No one else is connected, using my own blockchain.")
-  def request_blockchain_from_peer([node]), do: request_blockchain_from_peer(node)
-  def request_blockchain_from_peer([node | _rest]), do: request_blockchain_from_peer(node)
-  def request_blockchain_from_peer(node) do
+  def replace_blockchain(%{chain: chain} = blockchain) do
+    chain
+    |> Enum.reverse()
+    |> Enum.reduce({true, List.first(chain)}, fn block, {all_valid?, last_block} ->
+      valid? = {:ok, :valid} == Block.validate_block(last_block, block)
+      {all_valid? and valid?, block}
+    end)
+    |> case do
+      {true, _last_block} -> Logger.info("All blocks valid, replacing chain...")
+      BlockChainAgent.update(blockchain)
+      {false, _last_block} -> Logger.warn("Invalid blocks found, keeping existing chain")
+    end
+  end
+
+  def replace_blockchain_from_peer([]),
+    do: Logger.info("No one else is connected, using my own blockchain.")
+
+  def replace_blockchain_from_peer([node]), do: replace_blockchain_from_peer(node)
+  def replace_blockchain_from_peer([node | _rest]), do: replace_blockchain_from_peer(node)
+
+  def replace_blockchain_from_peer(node) do
     # At least one peer is connected, let's ask someone for its blockchain
     peer_blockchain = Agent.get({BlockChainAgent, node}, &Map.get(&1, :blockchain))
-    BlockChainAgent.update(peer_blockchain)
+    replace_blockchain(peer_blockchain)
   end
 end

@@ -5,6 +5,8 @@ defmodule Smartchain.Application do
 
   use Application
 
+  alias Smartchain.Blockchain.Blockchain
+
   def start(_type, _args) do
     api_port = String.to_integer(System.fetch_env!("API_PORT"))
 
@@ -24,7 +26,7 @@ defmodule Smartchain.Application do
     result = Supervisor.start_link(children, opts)
 
     # Request initial blockchain from a peer, if one is available
-    Smartchain.Blockchain.Blockchain.request_blockchain_from_peer(Node.list())
+    Blockchain.replace_blockchain_from_peer(Node.list())
 
     result
   end
