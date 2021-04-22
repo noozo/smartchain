@@ -1,4 +1,4 @@
-defmodule Smartchain.Blockchain.Blockchain do
+defmodule Smartchain.Blockchain do
   @moduledoc """
   The blockchain itself
   """
@@ -36,12 +36,16 @@ defmodule Smartchain.Blockchain.Blockchain do
     |> Enum.reverse()
     |> Enum.reduce({true, List.first(chain)}, fn block, {all_valid?, last_block} ->
       valid? = {:ok, :valid} == Block.validate_block(last_block, block)
+      Logger.info("*-- Validating block number #{block.headers.number}: #{valid?}")
       {all_valid? and valid?, block}
     end)
     |> case do
-      {true, _last_block} -> Logger.info("All blocks valid, replacing chain...")
-      BlockChainAgent.update(blockchain)
-      {false, _last_block} -> Logger.warn("Invalid blocks found, keeping existing chain")
+      {true, _last_block} ->
+        Logger.info("All blocks valid, replacing chain...")
+        BlockChainAgent.update(blockchain)
+
+      {false, _last_block} ->
+        Logger.warn("Invalid blocks found, keeping existing chain")
     end
   end
 

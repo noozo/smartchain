@@ -5,7 +5,7 @@ defmodule Smartchain.Application do
 
   use Application
 
-  alias Smartchain.Blockchain.Blockchain
+  alias Smartchain.Blockchain
 
   def start(_type, _args) do
     api_port = String.to_integer(System.fetch_env!("API_PORT"))

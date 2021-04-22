@@ -6,7 +6,7 @@ defmodule Smartchain.Blockchain.Agent do
 
   require Logger
 
-  alias Smartchain.Blockchain.Blockchain
+  alias Smartchain.Blockchain
 
   def start_link([]) do
     Logger.info("Starting blockchain agent...")

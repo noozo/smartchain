@@ -6,9 +6,9 @@ defmodule Smartchain.Blockchain.PubSub do
 
   require Logger
 
+  alias Smartchain.Blockchain
   alias Smartchain.Blockchain.Agent
   alias Smartchain.Blockchain.Block
-  alias Smartchain.Blockchain.Blockchain
 
   @me __MODULE__
 

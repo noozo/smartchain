@@ -27,4 +27,19 @@ defmodule Smartchain.Helpers.Util do
     |> ExSha3.keccak_256()
     |> Base.encode16()
   end
+
+  # def cenas do
+  #   Curvy.generate_key()
+  #   iex> sig = Curvy.sign("hello", key)
+  #   <<sig::binary-size(71)>>
+
+  #   iex> sig = Curvy.sign("hello", compact: true)
+  #   <<sig::binary-size(65)>>
+
+  #   iex> sig = Curvy.sign("hello", compact: true, encoding: :base64)
+  #   "IEnXUDXZ3aghwXaq1zu9ax2zJj7N+O4gGREmWBmrldwrIb9B7QuicjwPrrv3ocPpxYO7uCxcw+DR/FcHR9b/YjM="
+
+  #   iex> sig = Curvy.verify(sig, "hello", key)
+  #   true
+  # end
 end
